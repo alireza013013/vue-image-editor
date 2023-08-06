@@ -1,0 +1,191 @@
+@import "../../assets/references/index.scss";
+
+.main-editor-div {
+  @include responsive-more-size(padding, 36px, 36px, 10px, 10px);
+  display: flex;
+  flex-direction: column;
+  // @include responsive-more-size(width, unset, unset, 100%, 100%);
+  margin: auto;
+  background-color: var(--modal-bg);
+  @include responsive-more-size(border-radius, 10px, 10px, 0, 0);
+  overflow-y: auto;
+  @include responsive-more-size(max-height, 80%, 80%, none, none);
+  @include responsive-more-size(
+    height,
+    fit-content,
+    fit-content,
+    calc(100% - 20px),
+    calc(100% - 20px)
+  );
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  align-items: center;
+
+  // .title-div {
+  //   width: 100%;
+  // }
+
+  .blur-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // min-width: 300px;
+    // min-height: 400px;
+    background: #dadada;
+    border-radius: 4px;
+
+    .canvas-resize-div {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      direction: ltr !important;
+      max-width: fit-content;
+      max-height: fit-content;
+      max-width: -moz-fit-content;
+      max-height: -moz-fit-content;
+
+      .canvas-style {
+        width: 100%;
+        // max-width: 300px;
+        // max-height: 400px;
+      }
+
+      .resizable {
+        background: transparent;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+
+        .resizers {
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+
+          .resizer {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+          }
+
+          .top-left {
+            left: -5px;
+            top: -5px;
+            cursor: nwse-resize;
+          }
+
+          .top-right {
+            right: -5px;
+            top: -5px;
+            cursor: nesw-resize;
+          }
+
+          .bottom-left {
+            left: -5px;
+            bottom: -5px;
+            cursor: nesw-resize;
+          }
+
+          .bottom-right {
+            right: -5px;
+            bottom: -5px;
+            cursor: nwse-resize;
+          }
+        }
+      }
+    }
+  }
+
+  .show-pre-div {
+    margin: 20px auto;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: -1000000px;
+
+    canvas {
+      border-radius: 8px;
+    }
+  }
+
+  .title-div {
+    @include responsive-more-size(margin-bottom, 36px, 36px, 30px, 30px);
+  }
+
+  .options-div {
+    width: 100%;
+    display: flex;
+    column-gap: 10px;
+    height: 40px;
+    @include responsive-more-size(margin-top, 36px, 36px, 30px, 30px);
+
+    .option {
+      display: flex;
+      cursor: pointer;
+
+      .icon-option {
+        width: 30px;
+        height: 30px;
+      }
+
+      .active {
+        filter: invert(69%) sepia(85%) saturate(2633%) hue-rotate(4deg)
+          brightness(90%) contrast(101%);
+      }
+    }
+  }
+
+  .options-paiting {
+    width: 100%;
+    margin-top: 20px;
+
+    input[type="color"] {
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      height: 30px;
+      padding: 0;
+      width: 30px;
+    }
+
+    *:focus {
+      border-radius: 0;
+      outline: none;
+    }
+
+    ::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    ::-webkit-color-swatch {
+      border: 0;
+      border-radius: 50%;
+    }
+
+    ::-moz-color-swatch,
+    ::-moz-focus-inner {
+      border: 0;
+    }
+
+    ::-moz-focus-inner {
+      padding: 0;
+    }
+  }
+
+  .submit-button-div {
+    width: 100%;
+    display: flex;
+    column-gap: 6px;
+    margin-top: 12px;
+  }
+}
