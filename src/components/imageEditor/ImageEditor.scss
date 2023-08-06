@@ -9,6 +9,7 @@
   background-color: var(--modal-bg);
   @include responsive-more-size(border-radius, 10px, 10px, 0, 0);
   overflow-y: auto;
+  // max-height: 400px;
   @include responsive-more-size(max-height, 80%, 80%, none, none);
   @include responsive-more-size(
     height,

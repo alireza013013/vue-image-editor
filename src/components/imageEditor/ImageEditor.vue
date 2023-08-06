@@ -141,11 +141,13 @@ function mouseDownCornerCropRectangle(event: MouseEvent, position: string) {
     heightCropRectangle.value = parseFloat(getComputedStyle(CropRectangleElement.value, null).getPropertyValue('height').replace('px', ''));
 
     let scrollFromTop = document.getElementById("MainEditorId")?.scrollTop as number;
+    console.log("are are", scrollFromTop);
+    
     xPositionMouseClick.value = event.pageX;
     yPositionMouseClick.value = event.pageY + scrollFromTop;
 
     distanceCanvasFromLeftPage.value = document.getElementById("CanvasImageCropRectangleIdDiv")?.getBoundingClientRect().left as number
-    distanceCanvasFromTopPage.value = document.getElementById("CanvasImageCropRectangleIdDiv")?.getBoundingClientRect().top as number
+    distanceCanvasFromTopPage.value = (document.getElementById("CanvasImageCropRectangleIdDiv")?.getBoundingClientRect().top as number) + window.scrollY
 
     distanceCropRectangleFromTopCanvas.value = yPositionMouseClick.value - distanceCanvasFromTopPage.value
     distanceCropRectangleFromLeftCanvas.value = xPositionMouseClick.value - distanceCanvasFromLeftPage.value;
@@ -187,6 +189,15 @@ function handleCursorOutOfImage(width: number, height: number, pageX: number, pa
     let widthCanvas = mainCanvasImage.value?.getBoundingClientRect().width as number
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
 
+    console.log("width",width);
+    console.log("height",height);
+    console.log("pageX",pageX);
+    console.log("pageY",pageY);
+    console.log("widthCanvas",widthCanvas);
+    console.log("heightCanvas",heightCanvas);
+    console.log("distanceCanvasFromTopPage",distanceCanvasFromTopPage.value);
+    
+
     if (pageX > distanceCanvasFromLeftPage.value + widthCanvas && direction.includes("right")) {
         CropRectangleElement.value.style.width = widthCanvas - CropRectangleElement.value.offsetLeft + 'px'
     }
@@ -194,7 +205,7 @@ function handleCursorOutOfImage(width: number, height: number, pageX: number, pa
         CropRectangleElement.value.style.left = 0 + 'px'
     }
     if (pageY > distanceCanvasFromTopPage.value + heightCanvas && direction.includes("bottom")) {
-        // console.log(1);
+        console.log(1);
         // console.log(window.scrollY);
         // console.log("pagey",pageY);
         // console.log("distanceCanvasFromTopPage",distanceCanvasFromTopPage.value);
@@ -203,6 +214,8 @@ function handleCursorOutOfImage(width: number, height: number, pageX: number, pa
         CropRectangleElement.value.style.height = heightCanvas - CropRectangleElement.value.offsetTop + "px"
     }
     if (pageY < distanceCanvasFromTopPage.value && direction.includes("top")) {
+        console.log(2);
+        
         CropRectangleElement.value.style.top = 0 + 'px'
     }
     if (pageY + height > distanceCanvasFromTopPage.value + heightCanvas && direction.includes("top")) {
@@ -245,8 +258,14 @@ function setWidthAndLeftPossitionForLeftSide(pageX: number, width: number) {
 function setHeightForBottomSide(pageY: number, height: number) {
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
     if (height > minimumSizeCropRectangle.value && pageY < distanceCanvasFromTopPage.value + heightCanvas) {
+        console.log(17);
+        
         CropRectangleElement.value.style.height = height + 'px'
         if (parseFloat(getComputedStyle(CropRectangleElement.value, null).getPropertyValue('top').replace('px', '')) == 0) {
+            console.log(16);
+            console.log("cc",CropRectangleElement.value.getBoundingClientRect().top);
+            console.log("dis",distanceCanvasFromTopPage.value);
+            
             CropRectangleElement.value.style.top = CropRectangleElement.value.getBoundingClientRect().top - distanceCanvasFromTopPage.value + "px"
         }
         CropRectangleElement.value.style.bottom = ''
@@ -255,13 +274,16 @@ function setHeightForBottomSide(pageY: number, height: number) {
 
 function setHeightAndTopPossitionForBottomSide(pageY: number, height: number) {
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
+    console.log(11);
+    
     if (height > minimumSizeCropRectangle.value && pageY > distanceCanvasFromTopPage.value) {
         if (pageY + height > distanceCanvasFromTopPage.value + heightCanvas) {
-            console.log(1);
+            console.log(12);
             
             CropRectangleElement.value.style.top = ''
             CropRectangleElement.value.style.bottom = '0px'
         } else {
+            console.log(13);
             CropRectangleElement.value.style.top = distanceCropRectangleFromTopCanvas.value + pageY - yPositionMouseClick.value - window.scrollY + 'px'
         }
         CropRectangleElement.value.style.height = height + 'px'
