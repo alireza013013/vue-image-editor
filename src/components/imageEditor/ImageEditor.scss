@@ -4,15 +4,10 @@
   @include responsive-more-size(padding, 36px, 36px, 10px, 10px);
   display: flex;
   flex-direction: column;
-  // @include responsive-more-size(width, unset, unset, 100%, 100%);
   margin: auto;
   background-color: var(--modal-bg);
   @include responsive-more-size(border-radius, 10px, 10px, 0, 0);
   overflow-y: auto;
-  // height: 100%;
-  // max-height: 300px;
-  // @include responsive-more-size(max-height, 80%, 80%, none, none);
-  // @include responsive-more-size(height, fit-content, fit-content, calc(100% - 20px), calc(100% - 20px));
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   position: relative;
@@ -23,16 +18,10 @@
 
   align-items: center;
 
-  // .title-div {
-  //   width: 100%;
-  // }
-
   .blur-div {
     display: flex;
     justify-content: center;
     align-items: center;
-    // min-width: 300px;
-    // min-height: 400px;
     background: #dadada;
     border-radius: 4px;
 
@@ -49,8 +38,6 @@
       .canvas-style {
         width: 100%;
         height: 100%;
-        // max-width: 300px;
-        // max-height: 400px;
       }
 
       .resizable {

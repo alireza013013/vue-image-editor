@@ -28,7 +28,7 @@
 
 
     <div class="control">
-      <ImageEditor ref="imageEditor" background-crop-div-color="white" border-crop-div-color="#4286f4" :color-brush="colorBrush" v-model:file-image="selectedFileImageForEdit" />
+      <ImageEditor :max-height="400" :max-width="200" ref="imageEditor" background-crop-div-color="white" border-crop-div-color="#4286f4" :color-brush="colorBrush" v-model:file-image="selectedFileImageForEdit" />
     </div>
   </div>
 </template>

@@ -1,11 +1,11 @@
 <template>
     <div class="main-editor-div" id="MainEditorId">
-        <!-- <div class="title-div">
-            <h1 class="title-modal">ویرایش تصویر</h1>
-        </div> -->
         <div class="blur-div">
             <div class="canvas-resize-div" id="CanvasImageCropRectangleIdDiv">
-                <canvas class="canvas-style" @touchmove="cursorMove" @touchend="cursorEndClick"
+                <canvas :style="{
+            maxWidth : maxWidth ? maxWidth + `px` : `unset`,
+            maxHeight : maxHeight ? maxHeight + `px` : `unset`,
+        }" class="canvas-style" @touchmove="cursorMove" @touchend="cursorEndClick"
                     @touchstart="cursorStartClick" @mousedown="cursorStartClick" @mouseup="cursorEndClick"
                     @mousemove="cursorMove" width="400" height="300" id="mainImageCanvasId"></canvas>
                 <div v-show="activeCroping" id="CropRectangleIdDiv" class='resizable'>
@@ -41,38 +41,6 @@
         <div class="show-pre-div">
             <canvas width="200" height="200" id="canvasShowPreviewCropId"></canvas>
         </div>
-        <!-- <div class="options-div" v-if="!activeBrushing && !activeCroping">
-            <div class="option" @click="enablePainting">
-                نقاشی
-                <img :class="activeBrushing ? `active` : ``" class="icon-option"
-                     src="@/assets/images/icons/paintbrush-solid.svg" alt="Brush">
-            </div>
-            <div class="option" @click="enableCroping">
-                بریدن
-                <img :class="activeCroping ? `active` : ``" class="icon-option"
-                     src="@/assets/images/icons/expand-solid.svg"
-                     alt="Crop">
-            </div>
-            <div class="option" @click="finishEditing">
-                اتمام
-                <img class="icon-option" src="@/assets/images/icons/check-solid.svg" alt="Finish">
-            </div>
-
-            <div class="option" @click="download">
-                دانلود
-            </div>
-
-            <div class="option" @click="addFilter">
-                فیلتر
-            </div>
-        </div> -->
-        <!-- <div class="options-paiting" v-if="activeBrushing">
-            <input type="color" v-model="colorBrush">
-        </div> -->
-        <!-- <div class="submit-button-div" v-if="activeBrushing || activeCroping">
-            <button @click="cancelChanges">لغو</button>
-            <button @click="saveChanges">ذخیره</button>
-        </div> -->
     </div>
 </template>
 
@@ -84,7 +52,9 @@ interface ImageEditorProps {
     fileImage?: File;
     colorBrush: string,
     borderCropDivColor: string,
-    backgroundCropDivColor: string
+    backgroundCropDivColor: string,
+    maxHeight? : number
+    maxWidth? : number
 }
 
 onMounted(async () => {
@@ -135,8 +105,7 @@ function enableCroping() {
     }
 }
 
-function calculateDistanseFromTop() {
-    let element = document.getElementById("CanvasImageCropRectangleIdDiv");
+function calculateDistanseFromTop(element : HTMLElement) {
     let distance = 0;
     if (element != null) {
         do {
@@ -156,7 +125,8 @@ function mouseDownCornerCropRectangle(event: MouseEvent, position: string) {
     yPositionMouseClick.value = event.pageY;
 
     distanceCanvasFromLeftPage.value = document.getElementById("CanvasImageCropRectangleIdDiv")?.getBoundingClientRect().left as number
-    distanceCanvasFromTopPage.value = calculateDistanseFromTop()
+    let element = document.getElementById("CanvasImageCropRectangleIdDiv") as HTMLElement;
+    distanceCanvasFromTopPage.value = calculateDistanseFromTop(element)
     distanceCropRectangleFromTopCanvas.value = yPositionMouseClick.value - distanceCanvasFromTopPage.value
     distanceCropRectangleFromLeftCanvas.value = xPositionMouseClick.value - distanceCanvasFromLeftPage.value;
 
@@ -174,7 +144,8 @@ function touchStartCornerCropRectangle(event: TouchEvent, position: string) {
     yPositionMouseClick.value = event.touches[0].pageY;
 
     distanceCanvasFromLeftPage.value = document.getElementById("CanvasImageCropRectangleIdDiv")?.getBoundingClientRect().left as number
-    distanceCanvasFromTopPage.value = calculateDistanseFromTop()
+    let element = document.getElementById("CanvasImageCropRectangleIdDiv") as HTMLElement;
+    distanceCanvasFromTopPage.value = calculateDistanseFromTop(element)
 
     distanceCropRectangleFromTopCanvas.value = yPositionMouseClick.value - distanceCanvasFromTopPage.value
     distanceCropRectangleFromLeftCanvas.value = xPositionMouseClick.value - distanceCanvasFromLeftPage.value;
@@ -195,16 +166,6 @@ function touchEndCornerCropRectangle(event: TouchEvent) {
 function handleCursorOutOfImage(width: number, height: number, pageX: number, pageY: number, direction: string) {
     let widthCanvas = mainCanvasImage.value?.getBoundingClientRect().width as number
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
-
-    console.log("width", width);
-    console.log("height", height);
-    console.log("pageX", pageX);
-    console.log("pageY", pageY);
-    console.log("widthCanvas", widthCanvas);
-    console.log("heightCanvas", heightCanvas);
-    console.log("distanceCanvasFromTopPage", distanceCanvasFromTopPage.value);
-
-
     if (pageX > distanceCanvasFromLeftPage.value + widthCanvas && direction.includes("right")) {
         CropRectangleElement.value.style.width = widthCanvas - CropRectangleElement.value.offsetLeft + 'px'
     }
@@ -212,21 +173,12 @@ function handleCursorOutOfImage(width: number, height: number, pageX: number, pa
         CropRectangleElement.value.style.left = 0 + 'px'
     }
     if (pageY > distanceCanvasFromTopPage.value + heightCanvas && direction.includes("bottom")) {
-        console.log(1);
-        // console.log(window.scrollY);
-        // console.log("pagey",pageY);
-        // console.log("distanceCanvasFromTopPage",distanceCanvasFromTopPage.value);
-        // console.log("heightCanvas",heightCanvas);
-
         CropRectangleElement.value.style.height = heightCanvas - CropRectangleElement.value.offsetTop + "px"
     }
     if (pageY < distanceCanvasFromTopPage.value && direction.includes("top")) {
-        console.log(2);
-
         CropRectangleElement.value.style.top = 0 + 'px'
     }
     if (pageY + height > distanceCanvasFromTopPage.value + heightCanvas && direction.includes("top")) {
-        console.log(3);
         CropRectangleElement.value.style.top = ''
         CropRectangleElement.value.style.bottom = '0px'
     }
@@ -265,35 +217,19 @@ function setWidthAndLeftPossitionForLeftSide(pageX: number, width: number) {
 function setHeightForBottomSide(pageY: number, height: number) {
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
     if (height > minimumSizeCropRectangle.value && pageY < distanceCanvasFromTopPage.value + heightCanvas) {
-        console.log(17);
-
         CropRectangleElement.value.style.height = height + 'px'
-        console.log("na", parseFloat(getComputedStyle(CropRectangleElement.value, null).getPropertyValue('top').replace('px', '')));
-
-        if (parseFloat(getComputedStyle(CropRectangleElement.value, null).getPropertyValue('top').replace('px', '')) == 0) {
-            console.log(16);
-            console.log("cc", CropRectangleElement.value.getBoundingClientRect().top);
-            console.log("dis", distanceCanvasFromTopPage.value);
-
-            CropRectangleElement.value.style.top = CropRectangleElement.value.getBoundingClientRect().top - distanceCanvasFromTopPage.value + "px"
-            // CropRectangleElement.value.style.top = CropRectangleElement.value.getBoundingClientRect().top + "px"
-        }
+        CropRectangleElement.value.style.top = calculateDistanseFromTop(CropRectangleElement.value) - distanceCanvasFromTopPage.value + "px"
         CropRectangleElement.value.style.bottom = ''
     }
 }
 
 function setHeightAndTopPossitionForBottomSide(pageY: number, height: number) {
     let heightCanvas = mainCanvasImage.value?.getBoundingClientRect().height as number
-    console.log(11);
-
     if (height > minimumSizeCropRectangle.value && pageY > distanceCanvasFromTopPage.value) {
         if (pageY + height > distanceCanvasFromTopPage.value + heightCanvas) {
-            console.log(12);
-
             CropRectangleElement.value.style.top = ''
             CropRectangleElement.value.style.bottom = '0px'
         } else {
-            console.log(13);
             CropRectangleElement.value.style.top = distanceCropRectangleFromTopCanvas.value + pageY - yPositionMouseClick.value + 'px'
         }
         CropRectangleElement.value.style.height = height + 'px'
