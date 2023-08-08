@@ -88,4 +88,16 @@ function cancelChanges() {
 </script>
 ```
 
-you should declare variable that access to functions imageEditor component, in top example declare imageEditor variable that first amount null that ref to component. 
+you should declare variable that access to functions imageEditor component, in top example declare `imageEditor` variable that first amount null that ref to component in html. 
+
+### Crop Feature
+if you want start crop image you should call function `enablePainting`. after call it squere crop is visible. you can create a buttton and after click on button call `enableCroping`. after enable feature, there are two function : `saveChanges` , `cancelChanges`. if you want save change call `saveChanges` function or not call `cancelChanges` function. with `background-crop-div-color` and `border-crop-div-color` you can change style squere crop.
+
+#### notice
+when feature like crop and paiting are disable, dont show button for save change or cancel change.
+
+
+### Paiting Feature
+if you want start paiting on image you should call function `enablePainting`. after call it squere crop is visible. you can create a buttton and after click on button call `enableCroping`. after enable feature, there are two function : `saveChanges` , `cancelChanges`. if you want save change call `saveChanges` function or not call `cancelChanges` function. with `background-crop-div-color` and `border-crop-div-color` you can change style squere crop.
+
+
