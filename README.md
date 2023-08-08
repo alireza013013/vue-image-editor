@@ -1,46 +1,91 @@
-# vue-image-editor
+# Vue 3 Image Editor
 
-This template should help get you started developing with Vue 3 in Vite.
+Modern lightweight Vue 3 image editor component
 
-## Recommended IDE Setup
+<p>
+  <a href="https://www.npmjs.com/package/vue3-image-editor"><img src="https://img.shields.io/npm/v/vue3-image-editor.svg" alt="npm"/></a>
+</p>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Features
 
-## Type Support for `.vue` Imports in TS
+-  Fully Custom UI For Image Editor
+-  Crop Image
+-  Painting On Image
+-  It does not reduce the quality of the photo
+-  Select desired width and length
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## Getting started
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### Installation
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+First step is to install it using `npm`:
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```bash
+npm i vue3-image-editor
 ```
 
-### Compile and Hot-Reload for Development
+### Basic Using
 
-```sh
-npm run dev
+you should import ViewPlugin And css file in `main.ts` and use ViewPlugin.
+
+```ts
+import ViewerPlugin from "vue3-image-editor"
+import "vue3-image-editor/styles.css"
+
+app.use(ViewerPlugin)
+```
+or you can use component in special file but css file import in `main.ts`.
+
+```vue
+import { ImageEditor } from "vue3-image-editor"
 ```
 
-### Type-Check, Compile and Minify for Production
+example below show simple use.
 
-```sh
-npm run build
+```vue
+<template>
+    <ImageEditor @finish-editing="finishEditImage" :max-height="400"   :max-width="400" ref="imageEditor" background-crop-div-color="white"
+    border-crop-div-color="#4286f4" :color-brush="colorBrush" v-model:file-image="selectedFileImageForEdit" />
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+import { ImageEditor } from "vue3-image-editor"
+
+
+const emit = defineEmits(["finishEditing"]);
+const colorBrush = ref<string>("")
+const selectedFileImageForEdit = ref<File>()
+const imageEditor = ref<any>(null)
+
+
+function enableCroping() {
+    imageEditor.value.enableCroping()
+}
+
+function enablePainting() {
+    imageEditor.value.enablePainting()
+}
+
+function finishEditingClick() {
+    imageEditor.value.finishEditing()
+}
+
+function finishEditImage(newFile: File) {
+    emit("finishEditing", newFile)
+}
+
+function download() {
+    imageEditor.value.download()
+}
+function saveChanges() {
+    imageEditor.value.saveChanges()
+}
+function cancelChanges() {
+    imageEditor.value.cancelChanges()
+}
+
+</script>
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+you should declare variable that access to functions imageEditor component, in top example declare imageEditor variable that first amount null that ref to component. 
