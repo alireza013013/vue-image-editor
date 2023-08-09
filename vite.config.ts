@@ -1,38 +1,16 @@
-import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import typescript2 from "rollup-plugin-typescript2"
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { resolve } from "node:path";
+import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    typescript2({
-      check: false,
-      include: ["src/components/imageEditor/*.vue"],
-      tsconfigOverride: {
-        compilerOptions: {
-          sourceMap: true,
-          declaration: true,
-          declarationMap: true,
-        },
-        exclude: ["vite.config.ts", "main.ts"],
-      },
-    }),
-  ],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
+  plugins: [vue(), dts()],
   build: {
-    cssCodeSplit: false,
     lib: {
-      entry: "./src/ViewerPlugin.ts",
-      formats: ["es", "cjs"],
-      name: "ViwerPlugin",
-      fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "VueImageEditor",
+      fileName: "vue-image-editor",
     },
     rollupOptions: {
       external: ["vue"],
@@ -44,4 +22,3 @@ export default defineConfig({
     },
   },
 });
-

@@ -1,19 +1,19 @@
 {
   "name": "vue3-image-editor",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "version": "1.0.3",
+  "description": "A Image Editor component library",
+  "main": "./dist/vue-image-editor.umd.js",
+  "module": "./dist/vue-image-editor.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./styles.css": "./dist/style.css"
+    ".": {
+      "import": "./dist/vue-image-editor.esm.js",
+      "require": "./dist/vue-image-editor.js"
+    }
   },
-  "browser": {
-    "./styles.css": "./dist/style.css"
-  },
-  "types": "dist/ImageEditor.vue.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "dev": "vite",
@@ -24,9 +24,20 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
+  "keywords": [
+    "vue",
+    "vue3",
+    "component",
+    "library",
+    "image",
+    "edit",
+    "typescript"
+  ],
   "dependencies": {
     "compressorjs": "^1.2.1",
+    "path": "^0.12.7",
     "pinia": "^2.1.4",
+    "vite-plugin-dts": "^3.5.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
