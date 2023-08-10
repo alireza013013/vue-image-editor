@@ -47,15 +47,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import Compressor from 'compressorjs';
-
-interface ImageEditorProps {
-    fileImage?: File;
-    colorBrush: string,
-    borderCropDivColor: string,
-    backgroundCropDivColor: string,
-    maxHeight? : number
-    maxWidth? : number
-}
+import type {ImageEditorProps} from "./imageEditor"
 
 onMounted(async () => {
     await loadImageGetFromProp()

@@ -1,19 +1,20 @@
 {
   "name": "vue3-image-editor",
-  "version": "1.0.3",
-  "description": "A Image Editor component library",
-  "main": "./dist/vue-image-editor.umd.js",
-  "module": "./dist/vue-image-editor.js",
-  "types": "./dist/index.d.ts",
+  "version": "1.0.8",
+  "description": "An Image Editor component library",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/vue-image-editor.esm.js",
-      "require": "./dist/vue-image-editor.js"
-    }
+    ".": "./dist/index.js",
+    "./styles.css": "./dist/style.css"
   },
+  "browser": {
+    "./styles.css": "./dist/style.css"
+  },
+  "types": "dist/components/imageEditor/imageEditor.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",
@@ -33,6 +34,10 @@
     "edit",
     "typescript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alireza013013/vue-image-editor"
+  },
   "dependencies": {
     "compressorjs": "^1.2.1",
     "path": "^0.12.7",
