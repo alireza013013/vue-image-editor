@@ -3,9 +3,9 @@
         <div class="blur-div">
             <div class="canvas-resize-div" id="CanvasImageCropRectangleIdDiv">
                 <canvas :style="{
-            maxWidth : maxWidth ? maxWidth + `px` : `unset`,
-            maxHeight : maxHeight ? maxHeight + `px` : `unset`,
-        }" class="canvas-style" @touchmove="cursorMove" @touchend="cursorEndClick"
+                    maxWidth: maxWidth ? maxWidth + `px` : `unset`,
+                    maxHeight: maxHeight ? maxHeight + `px` : `unset`,
+                }" class="canvas-style" @touchmove="cursorMove" @touchend="cursorEndClick"
                     @touchstart="cursorStartClick" @mousedown="cursorStartClick" @mouseup="cursorEndClick"
                     @mousemove="cursorMove" width="400" height="300" id="mainImageCanvasId"></canvas>
                 <div v-show="activeCroping" id="CropRectangleIdDiv" class='resizable'>
@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import Compressor from 'compressorjs';
-import type {ImageEditorProps} from "./imageEditor"
+import type { ImageEditorProps } from "./imageEditor"
 
 onMounted(async () => {
     await loadImageGetFromProp()
@@ -97,7 +97,7 @@ function enableCroping() {
     }
 }
 
-function calculateDistanseFromTop(element : HTMLElement) {
+function calculateDistanseFromTop(element: HTMLElement) {
     let distance = 0;
     if (element != null) {
         do {

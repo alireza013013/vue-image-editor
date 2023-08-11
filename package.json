@@ -1,6 +1,6 @@
 {
   "name": "vue3-image-editor",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "An Image Editor component library",
   "type": "module",
   "main": "dist/index.cjs",
@@ -12,7 +12,7 @@
   "browser": {
     "./styles.css": "./dist/style.css"
   },
-  "types": "dist/components/imageEditor/imageEditor.d.ts",
+  "types": "dist/ViewerPlugin.d.ts",
   "files": [
     "dist"
   ],
@@ -41,8 +41,6 @@
   "dependencies": {
     "compressorjs": "^1.2.1",
     "path": "^0.12.7",
-    "pinia": "^2.1.4",
-    "vite-plugin-dts": "^3.5.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {

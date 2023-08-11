@@ -8,17 +8,18 @@ Modern lightweight Vue 3 image editor component
 
 ## Features
 
--  Fully Custom UI For Image Editor
--  Crop Image
+-  Component user interface customization
+-  Photo cropping
 -  Painting On Image
--  It does not reduce the quality of the photo
--  Select desired width and length
+-  No reduction in image quality
+-  Image compression to reduce size without losing quality
+-  Select desired width and height
 
 ## Getting started
 
 ### Installation
 
-First step is to install it using `npm`:
+The first step is to install using `npm`:
 
 ```bash
 npm i vue3-image-editor
@@ -26,7 +27,8 @@ npm i vue3-image-editor
 
 ### Basic Using
 
-you should import ViewPlugin And css file in `main.ts` and use ViewPlugin.
+#### Global Using
+you should import ViewPlugin And css file in the `main.ts` and use ViewPlugin.
 
 ```ts
 import ViewerPlugin from "vue3-image-editor"
@@ -34,13 +36,17 @@ import "vue3-image-editor/styles.css"
 
 app.use(ViewerPlugin)
 ```
-or you can use component in special file but css file import in `main.ts`.
 
-```vue
+#### Local Using
+You must import the component and css file in the desired file as follows.
+
+```ts
 import { ImageEditor } from "vue3-image-editor"
+import "vue3-image-editor/styles.css"
 ```
 
-example below show simple use.
+### Basic Example
+Simple usage is given in the following example.
 
 ```vue
 <template>
@@ -48,66 +54,68 @@ example below show simple use.
     border-crop-div-color="#4286f4" :color-brush="colorBrush" v-model:file-image="selectedFileImageForEdit" />
 
         <div class="options-div" v-if="!activeBrushing && !activeCroping">
-            <div class="option" @click="enablePainting">
+            <button class="option" @click="callEnablePainting">
                Painting
-            </div>
-            <div class="option" @click="enableCroping">
+            </button>
+            <button class="option" @click="callEnableCroping">
                Crop
-            </div>
-            <div class="option" @click="finishEditingClick">
+            </button>
+            <button class="option" @click="callDownLoadImage">
+               Download
+            </button>
+            <button class="option" @click="callFinishEditing">
                Finish
-            </div>
+            </button>
         </div>
         <div class="options-paiting" v-if="activeBrushing">
             <input type="color" v-model="colorBrush">
         </div>
         <div class="submit-button-div" v-if="activeBrushing || activeCroping">
-            <button @click="cancelChanges">Cancel</button>
-            <button @click="saveChanges">Save</button>
+            <button @click="callCancelChanges">Cancel</button>
+            <button @click="callSaveChanges">Save</button>
         </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref } from 'vue';
 import { ImageEditor } from "vue3-image-editor"
+import "vue3-image-editor/styles.css"
 
-
-const emit = defineEmits(["finishEditing"]);
 const colorBrush = ref<string>("")
 const selectedFileImageForEdit = ref<File>()
 const imageEditor = ref<any>(null)
 const activeBrushing = ref<boolean>(false)
 const activeCroping = ref<boolean>(false)
 
-function enableCroping() {
+function callEnableCroping() {
     imageEditor.value.enableCroping()
     activeCroping.value = true
 }
 
-function enablePainting() {
+function callEnablePainting() {
     imageEditor.value.enablePainting()
     activeBrushing.value = true
 }
 
-function finishEditingClick() {
+function callFinishEditing() {
     imageEditor.value.finishEditing()
 }
 
 function finishEditImage(newFile: File) {
-    emit("finishEditing", newFile)
+    console.log("Final File After Change",newFile)
 }
 
-function download() {
+function callDownLoadImage() {
     imageEditor.value.download()
 }
 
-function saveChanges() {
+function callSaveChanges() {
     imageEditor.value.saveChanges()
     activeBrushing.value = false
     activeCroping.value = false
 }
 
-function cancelChanges() {
+function callCancelChanges() {
     imageEditor.value.cancelChanges()
     activeBrushing.value = false
     activeCroping.value = false
@@ -115,19 +123,30 @@ function cancelChanges() {
 
 </script>
 ```
+To access component functions, a variable must be defined and connected to the component through ref. In the above example, `imageEditor` variable is used, whose initial value is null. You have to put your photo file in a `selectedFileImageForEdit` variable so that the photo will be displayed for you.
+To change the blob to a file, you can do the following.
 
-you should declare variable that access to functions imageEditor component, in top example declare `imageEditor` variable that first amount null that ref to component in html. 
+```ts
+const finalFile: File = new File([blob], "nameFile", { type: "image/png" })
+```
+ 
 
 ### Crop Feature
-if you want start crop image you should call function `enablePainting`. after call it squere crop is visible. you can create a buttton and after click on button call `enableCroping`. after enable feature, there are two function : `saveChanges` , `cancelChanges`. if you want save change call `saveChanges` function or not call `cancelChanges` function. with `background-crop-div-color` and `border-crop-div-color` you can change style squere crop.
+To use the photo cropping function, you must call `enableCroping`. For this purpose, you can define a button as in the example above and call `enableCroping` on the @click function button.
+After calling `enableCroping`, the photo cropping square will appear. Now, to save the changes, you can call the `saveChanges` and to cancel the changes, you can call the `cancelChanges`.
+You can change the square appearance of the photo by using `background-crop-div-color` and `border-crop-div-color`.
 
 #### Notice
-when feature like crop and paiting are disable, dont show button for save change or cancel change.
-and when one feature enable dont show another feature button.
+When the function of cutting and drawing is not yet activated, it is better not to show the buttons related to `saveChanges` and `cancelChanges` functions to the user so that the user cannot call them, because there is no need for this.
+When one of the functions is active, it is better not to show the other.
 
 ### Paiting Feature
-if you want start paiting on image you should call function `enablePainting`. after enable feature, there are two function : `saveChanges` , `cancelChanges`. if you want save change call `saveChanges` function or not call `cancelChanges` function. if you want change color of brush you can change property `color-brush`. you can create input type color and connect to a ref that change color of brush.
-
+To use the feature of drawing on the image, you must call `enablePainting`. For this purpose, you can define a button as in the example above and call `enablePainting` on the @click function button.
+Now, to save the changes, you can call the `saveChanges` and to cancel the changes, you can call the `cancelChanges`.
+The default color of the pen is black. To change it, you can change `color-brush` variable. You can also put a input color like the example above so that the user can choose the color himself.
 
 ### Width And Height
-you can set max-width and max-height for image. if you dont set image show in real size.
+You can specify the maximum width and maximum height of the photo. In the absence of these values, the photo will be loaded in its actual size. The recommended amount for these two is between 400 and 500.
+
+### Finish Editing
+After finishing the changes on the image, to access the final file, you must call `finishEditing`. Then you have to rewrite the `finishEditImage` function because this function returns the final file to us. These things can be seen in the above example.

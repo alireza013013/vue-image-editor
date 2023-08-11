@@ -1,5 +1,7 @@
 import { fileURLToPath, URL } from "url";
+
 import { defineConfig } from "vite";
+
 import vue from "@vitejs/plugin-vue";
 import typescript2 from "rollup-plugin-typescript2";
 
@@ -9,7 +11,7 @@ export default defineConfig({
     vue(),
     typescript2({
       check: false,
-      include: ["src/components/imageEditor/*.vue"],
+      include: ["src/components/*.vue"],
       tsconfigOverride: {
         compilerOptions: {
           sourceMap: true,
@@ -30,7 +32,7 @@ export default defineConfig({
     lib: {
       entry: "./src/ViewerPlugin.ts",
       formats: ["es", "cjs"],
-      name: "ViwerPlugin",
+      name: "ViewerPlugin",
       fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
     },
     rollupOptions: {
