@@ -6,6 +6,9 @@ Modern lightweight Vue 3 image editor component
   <a href="https://www.npmjs.com/package/vue3-image-editor"><img src="https://img.shields.io/npm/v/vue3-image-editor.svg" alt="npm"/></a>
 </p>
 
+## Demo
+https://alireza013013.github.io/example-vue-image-editor/
+
 ## Features
 
 -  Component user interface customization
